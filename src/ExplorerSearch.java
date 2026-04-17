@@ -30,9 +30,35 @@ public class ExplorerSearch {
      */
     public static int reachableArea(int[][] island) {
         int[] start = startLocation(island);
+        boolean[][] visited = new boolean[island.length][island[0].length];
 
-        // for now just return 1
-        return 1;
+        return explore(start, island, visited);
+    }
+
+    private static int explore(int[] loc, int[][] island, boolean[][] visited) {
+        int r = loc[0];
+        int c = loc[1];
+
+        // already visited
+        if (visited[r][c]) {
+            return 0;
+        }
+
+        // can't go here
+        if (island[r][c] == 2 || island[r][c] == 3) {
+            return 0;
+        }
+
+        visited[r][c] = true;
+
+        int count = 1;
+
+        // for now ONLY go up
+        if (r - 1 >= 0) {
+            count += explore(new int[] { r - 1, c }, island, visited);
+        }
+
+        return count;
     }
 
     public static int[] startLocation(int[][] island) {
