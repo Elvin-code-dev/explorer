@@ -39,12 +39,10 @@ public class ExplorerSearch {
         int r = loc[0];
         int c = loc[1];
 
-        // already visited
         if (visited[r][c]) {
             return 0;
         }
 
-        // can't go here
         if (island[r][c] == 2 || island[r][c] == 3) {
             return 0;
         }
@@ -53,12 +51,44 @@ public class ExplorerSearch {
 
         int count = 1;
 
-        // for now ONLY go up
-        if (r - 1 >= 0) {
-            count += explore(new int[] { r - 1, c }, island, visited);
+        for (int[] move : possibleMoves(island, loc)) {
+            count += explore(move, island, visited);
         }
 
         return count;
+    }
+
+    public static List<int[]> possibleMoves(int[][] island, int[] location) {
+        int r = location[0];
+        int c = location[1];
+
+        List<int[]> validLocs = new ArrayList<>();
+
+        int newR = r - 1;
+        int newC = c;
+        if (newR >= 0) {
+            validLocs.add(new int[] { newR, newC });
+        }
+
+        newR = r + 1;
+        newC = c;
+        if (newR < island.length) {
+            validLocs.add(new int[] { newR, newC });
+        }
+
+        newR = r;
+        newC = c + 1;
+        if (newC < island[0].length) {
+            validLocs.add(new int[] { newR, newC });
+        }
+
+        newR = r;
+        newC = c - 1;
+        if (newC >= 0) {
+            validLocs.add(new int[] { newR, newC });
+        }
+
+        return validLocs;
     }
 
     public static int[] startLocation(int[][] island) {
